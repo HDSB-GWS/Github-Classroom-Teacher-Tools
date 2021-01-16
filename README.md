@@ -1,4 +1,5 @@
 # Github-Teacher-Tools
+See the Github-Classroom-Utilities folder for more scripts written by [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
 
 ## HomeworkCheck.py
 
@@ -12,6 +13,7 @@ The user must have a plain text file (.txt or .csv) with the GitHub usernames of
 
 ### Usage
 
+To be updated
 
 
 
