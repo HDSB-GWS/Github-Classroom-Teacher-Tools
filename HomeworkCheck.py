@@ -3,7 +3,7 @@
 #Grabs/Updates all repos and prints out the last commit date
 
 # Requires SSH key paired with GitHub Account
-#   Step 1: +
+#   Step 1: https://inchoo.net/dev-talk/how-to-generate-ssh-keys-for-git-authorization/
 #   Step 2: Test by running the following command in the shell: ssh -T git@github.com
 #           If you see "Hi hdsbbrooks! You've successfully authenticated, but GitHub does not provide shell access." all is good =)
 #           Refrence: https://gist.github.com/developius/c81f021eb5c5916013dc
