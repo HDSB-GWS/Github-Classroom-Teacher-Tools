@@ -3,11 +3,12 @@
 #Grabs/Updates all repos and prints out the last commit date
 
 # Requires SSH key paired with GitHub Account
-#   Step 1: https://inchoo.net/dev-talk/how-to-generate-ssh-keys-for-git-authorization/
-#   Step 2: Test by running the following command in the shell: ssh -T git@github.com
+#   Step 1: Install git locally if you have not already done so: https://git-scm.com/downloads
+#   Step 2: https://inchoo.net/dev-talk/how-to-generate-ssh-keys-for-git-authorization/
+#   Step 3: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
+#   Step 4: Test by running the following command in the shell: ssh -T git@github.com
 #           If you see "Hi hdsbbrooks! You've successfully authenticated, but GitHub does not provide shell access." all is good =)
 #           Refrence: https://gist.github.com/developius/c81f021eb5c5916013dc
-#   Step 3: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
 
 import os
 import sys
