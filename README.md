@@ -4,6 +4,18 @@ This repo contains tools I use to manage my github repos.  The scripts are writt
 ### WorkFlow
 Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  This semester I am going to try a bit of a different process whereby I provide all feedback in a separate branch.
 
+Workflow:
+1. Create Assignment in github Classroom and share assignment link with class.
+2. Students work on Assignment.
+    * Students create assignment via link.
+    * Students work on assignment in repl.it or IDE of their choice and submit work completed back to git repo (daily)
+3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. (on mass by script - GetReadyForGrading.py)
+4. Teacher provides comments, feedback or grade in the feedback branch.
+5. Teacher commits changes and sends them to students as a pull request. (on mass by script - SendFeedback.py)
+6. Student reviews feedback/grade and can choose to integrate back into their code base (or not).
+
+Also testing out the github cli for command line pull requests: https://cli.github.com/
+
 ## GetReadyForGrading.py
 Gets and Updates all students repos to make sure they are ready for grading/feedback.
 
@@ -27,12 +39,12 @@ The user must have a plain text file (.txt or .csv) with the GitHub usernames of
 ### Getting SSH Key Set up with your github account
 - **Step 1**: Install git locally if you have not already done so: https://git-scm.com/downloads
 - **Step 2**: https://inchoo.net/dev-talk/how-to-generate-ssh-keys-for-git-authorization/
-  
+
   *Note:* If you set up a password when creating your SSH key the scrips attached will likely not work.
 - **Step 3**: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
 - **Step 4**: Test by running the following command in the shell: ssh -T git@github.com
         If you see "Hi hdsbbrooks! You've successfully authenticated, but GitHub does not provide shell access." all is good =)
-        
+
         Reference: https://gist.github.com/developius/c81f021eb5c5916013dc
 
 
@@ -70,5 +82,3 @@ The user must have a plain text file (.txt or .csv) with the GitHub usernames of
 There must exist an empty directory that will hold GitHub repositories and the MOSS directory structure.
 
 The user must have the CloneAssignment.py script from this repository on their machine.
-
-

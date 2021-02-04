@@ -1,6 +1,6 @@
 # Python 3
 # PushAllCommits.py
-# Mass push all commits made to each repo to remote
+# Mass push all commits made locally in each repo to remote
 
 # Requires SSH key paired with GitHub Account
 
@@ -9,15 +9,13 @@ import sys
 import subprocess
 
 #Classroom Info
-# orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
-# rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
+orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
+rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
 
 
 #Assignment Info
-# assignmentName = 'example-repo'            #The repo assignment name in github classroom
-# repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
-
-
+assignmentName = 'example-repo'            #The repo assignment name in github classroom
+repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
 
 
 startingPath = os.getcwd()
