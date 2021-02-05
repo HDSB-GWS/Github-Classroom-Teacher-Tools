@@ -1,7 +1,9 @@
 # Python 3
-# HomeworkCheck.py
+# GetReadyForGrading.py
 # If Repo not already cloned: Clones repo and creates feedback branch
 # If Repo exists, stashes all uncommited changes, updates feedback branch from main branch, and restores stash
+
+# WARNING: This script is NOT super resiliant and does not check for all edge cases.  Use at your own risk.
 
 # Requires SSH key paired with GitHub Account
 
@@ -9,7 +11,7 @@ import os
 import sys
 import subprocess
 
-isQuiet = True      #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
+isQuiet = False      #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
 
 def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
     if not isQuiet:
@@ -19,10 +21,16 @@ def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
 # orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
 # rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
 
+orgName = 'HDSB-GWS-ICS2-202021-Q2'   #The name of your github organization
+rosterPath = r'C:\Users\chris\Documents\GitHub\ics2o\ics2oq2_test.txt'                   #Path to your class roster (one github username per line)
+
 #Assignment Info
 # assignmentName = 'example-repo'            #The repo assignment name in github classroom
 # repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
 
+#House Construction Game Assignment
+assignmentName = 'house-construction'            #The repo assignment name in github classroom
+repoPath = r'C:\Users\chris\Documents\GitHub\ics2o\ScriptTest-HouseConstruction'            #The path to save the repos that are downloaded
 
 
 startingPath = os.getcwd()
@@ -52,10 +60,13 @@ for name in names:
         
         os.chdir(f'{repoPath}/{folderName}')          #Set correct repo path
         
-        #os.system('git stash -u')                     
+        #os.system('git stash -u')
+        print("pre")
+        noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from feedback branch
+        print("post")
         noisy(subprocess.check_output('git stash -u', shell=True))                #Stash current changes
         noisy(subprocess.check_output('git checkout '+defaultBranch , shell=True))#Switch to default (aka student) branch
-        noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes
+        noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from default branch
         noisy(subprocess.check_output('git checkout feedback' , shell=True))      #Switch back to feedback branch
         noisy(subprocess.check_output('git merge '+defaultBranch , shell=True))   #Merge in any changes made by student in default branch
         noisy(subprocess.check_output('git push' , shell=True))                   #Push the changes into the remote server
