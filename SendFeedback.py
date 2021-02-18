@@ -13,7 +13,7 @@ import sys
 import subprocess
 import re
 
-isQuiet = True     #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
+isQuiet = False     #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
 
 def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
     if not isQuiet:
@@ -22,13 +22,12 @@ def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
 commitMessage = ' "Feedback Commit"'
 
 #Classroom Info
-# orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
-# rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
+orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
+rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
 
 #Assignment Info
-# assignmentName = 'example-repo'            #The repo assignment name in github classroom
-# repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
-
+assignmentName = 'example-repo'            #The repo assignment name in github classroom
+repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
 
 
 
@@ -48,14 +47,21 @@ for name in names:
     defaultBranch = ""
     
     checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
-    if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
-        defaultBranch = 'main'
-    elif (len(subprocess.check_output(checkBranchCmd + "master", shell=True)) > 0):
-        defaultBranch = 'master'
-    else:
-        print("Whoa, something is really wrong.  Go see why there isn't a main/master branch")
-        break
-    
+    try:
+            
+        if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
+            defaultBranch = 'main'
+        elif (len(subprocess.check_output(checkBranchCmd + "master", shell=True)) > 0):
+            defaultBranch = 'master'
+        else:
+            print("Whoa, something is really wrong.  Go see why there isn't a main/master branch")
+            break
+    except subprocess.CalledProcessError as e:
+        if e.returncode == 128: #Repo does not exist, or incorrect permissions
+            print( f'Error: {orgName}/{folderName} does not exist')
+            continue            #Skip everything else!
+        else:
+            raise e  
     
     
     if os.path.exists(f'{repoPath}\\{folderName}'):   #Check to see if the project has been cloned before

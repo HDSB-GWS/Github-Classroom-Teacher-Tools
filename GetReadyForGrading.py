@@ -18,19 +18,12 @@ def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
         print(noiseIn.decode("utf-8"))
 
 #Classroom Info
-# orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
-# rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
-
-orgName = 'HDSB-GWS-ICS2-202021-Q2'   #The name of your github organization
-rosterPath = r'C:\Users\chris\Documents\GitHub\ics2o\ics2oq2_test.txt'                   #Path to your class roster (one github username per line)
+orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
+rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
 
 #Assignment Info
-# assignmentName = 'example-repo'            #The repo assignment name in github classroom
-# repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
-
-#House Construction Game Assignment
-assignmentName = 'house-construction'            #The repo assignment name in github classroom
-repoPath = r'C:\Users\chris\Documents\GitHub\ics2o\ScriptTest-HouseConstruction'            #The path to save the repos that are downloaded
+assignmentName = 'example-repo'            #The repo assignment name in github classroom
+repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
 
 
 startingPath = os.getcwd()
@@ -43,18 +36,27 @@ for name in names:
     
     folderName = f'{assignmentName}-{name}'
     
+
     #Find if default branch is master or main
     defaultBranch = ""
     
     checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
-    if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
-        defaultBranch = 'main'
-    elif (len(subprocess.check_output(checkBranchCmd + "master", shell=True)) > 0):
-        defaultBranch = 'master'
-    else:
-        print("Whoa, something is really wrong.  Go see why there isn't a main/master branch")
-        break
-    
+    try:
+        if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
+            defaultBranch = 'main'
+        elif (len(subprocess.check_output(checkBranchCmd + "master", shell=True)) > 0):
+            defaultBranch = 'master'
+        else:
+            print("Whoa, something is really wrong.  Go see why there isn't a main/master branch")
+            break
+    except subprocess.CalledProcessError as e:
+        if e.returncode == 128: #Repo does not exist, or incorrect permissions
+            print( f'Error: {orgName}/{folderName} does not exist')
+            continue            #Skip everything else!
+        else:
+            raise e    
+            
+        
     print(f'{repoPath}\\{folderName}')
     if os.path.exists(f'{repoPath}\\{folderName}'):   #Check to see if the project has been cloned before
         
