@@ -12,6 +12,7 @@ import os
 import sys
 import subprocess
 import re
+import time
 
 isQuiet = False     #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
 
@@ -47,7 +48,7 @@ for name in names:
     defaultBranch = ""
     
     checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
-    try:
+    try:  #This can likely be removed in a few years once everyone has transitioned to main instead of master
             
         if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
             defaultBranch = 'main'
@@ -68,31 +69,57 @@ for name in names:
         
         os.chdir(f'{repoPath}/{folderName}')          #Change the dir to the repo's folder
         
-        noisy(subprocess.check_output('git add --all', shell=True))       #Stage all (new, modified, deleted) files
-        #os.system('git commit -m '+ commitMessage)                        #Commit all staged changes  #NB: git reset HEAD~ If you want to undo a commit that is local.
-        try:
-            noisy(subprocess.check_output('git commit -m '+ commitMessage, shell=True))                #Stage all (new, modified, deleted) files
-        except subprocess.CalledProcessError as e:  #If no PR exists this command errors out with a return value of 1
-            if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
-                raise e
-            
-        noisy(subprocess.check_output('git push', shell=True))                #Push Changes   
-
-      
+        #Check to see if Feedback branch exists
         
-        #print(int(subprocess.check_output('git rev-list --count main...feedback', shell=True))) 
-        if (int(subprocess.check_output('git rev-list --count main...feedback', shell=True)) > 0):  #If feedback branch is ahead
-            
+        checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
+        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) != 0):  #check if feedback branch, if not create it.
+        
+            noisy(subprocess.check_output('git add --all', shell=True))       #Stage all (new, modified, deleted) files
+            #os.system('git commit -m '+ commitMessage)                        #Commit all staged changes  #NB: git reset HEAD~ If you want to undo a commit that is local.
             try:
-                noisy(subprocess.check_output('gh pr close feedback', shell=True))
+                noisy(subprocess.check_output('git commit -m '+ commitMessage, shell=True))                #Commit all (new, modified, deleted) files
             except subprocess.CalledProcessError as e:  #If no PR exists this command errors out with a return value of 1
                 if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
-                     raise e
+                    raise e
+                
+            noisy(subprocess.check_output('git push', shell=True))                #Push Changes   
 
-            noisy(subprocess.check_output('gh pr create --fill --title "Feedback from Mr. Brooks"', shell=True))                #Create Pull Request
+          
+            
+            #print(int(subprocess.check_output('git rev-list --count main...feedback', shell=True))) 
+            if (int(subprocess.check_output('git rev-list --count main...feedback', shell=True)) > 0):  #If feedback branch is ahead
+                
+                try:
+                    noisy(subprocess.check_output('gh pr close feedback', shell=True))  #Close the current pull request if any exist
+                except subprocess.CalledProcessError as e:  #If no PR exists this command errors out with a return value of 1
+                    if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
+                         raise e
+
+                try:#Oringally this just made a single pull request, but I wanted to backup each branch just in case it was needed later
+                    #To do that the feedback branch is renamed based on the current date/time and a PR is created from the renamed branch
+                    
+                    noisy(subprocess.check_output('git checkout feedback', shell=True))   #Ensure we are on feedback (probably not needed)
+                    backup_name = f'feedback_{round(time.time())}'
+                                    
+                    noisy(subprocess.check_output(f'git branch -m {backup_name}', shell=True))#Rename local feedback branch
+                    noisy(subprocess.check_output(f'git push origin -u {backup_name}', shell=True))#Push renamed branch to cloud
+                    
+                    noisy(subprocess.check_output('gh pr create --fill --title "Feedback from Mr. Brooks"', shell=True))    #Create new Pull Request
+                                    
+                    noisy(subprocess.check_output('git push origin --delete feedback', shell=True))#Delete the feedback branch now that we are done with it
+                    
+                    
+                except e:
+                    print("Something bad happened, check to see what happened while creating the pull request and renaming the old branch")
+                    raise e
+                    
+                
+            else:
+                print('No changes found - no Pull Request created')
+                
         else:
-            print('No changes found - no Pull Request created')
-     
+            print('Feedback branch does not exist - no Pull Request created')
+         
         os.chdir(startingPath)                        #Reset the path back to the starting folder
         
         

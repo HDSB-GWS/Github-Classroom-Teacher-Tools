@@ -63,9 +63,9 @@ for name in names:
         os.chdir(f'{repoPath}/{folderName}')          #Set correct repo path
         
         #os.system('git stash -u')
-        print("pre")
+        #print("pre")
         noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from feedback branch
-        print("post")
+        #print("post")
         noisy(subprocess.check_output('git stash -u', shell=True))                #Stash current changes
         noisy(subprocess.check_output('git checkout '+defaultBranch , shell=True))#Switch to default (aka student) branch
         noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from default branch
@@ -91,18 +91,15 @@ for name in names:
             
         os.chdir(f'{repoPath}/{folderName}')         #Set correct repo path
         
-        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) == 0):  #check if feedback branch, if not create it.
+        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) == 0):  #check if feedback branch exists, if not create it.
             print('Create and Push branch')
-            noisy(subprocess.check_output('git checkout -b feedback' , shell=True)) 
+            noisy(subprocess.check_output('git checkout -b feedback' , shell=True))   #Create new branch
             noisy(subprocess.check_output('git push -u origin feedback' , shell=True)) 
-        else:
+        else: #Branch already exists
             print('Set feeback to current branch')
-            noisy(subprocess.check_output('git checkout feedback' , shell=True)) 
+            noisy(subprocess.check_output('git checkout feedback' , shell=True)) #Checkout branch
         
         os.chdir(startingPath)                        #Reset the path back to the starting folder
 
         
 print("Finished!")
-
-
-
