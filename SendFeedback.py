@@ -2,8 +2,8 @@
 # SendFeedback.py
 # Uses github cli and git command line to create a commit of all changes and then push it as a pull request back to the student
 
-# Requires SSH key paired with GitHub Account
-# Requires Github CLI to be installed: https://cli.github.com/
+# NOTE:Requires SSH key paired with GitHub Account
+# DEPENDENCY: Requires Github CLI to be installed: https://cli.github.com/
 
 # WARNING: This script is NOT super resiliant and does not check for all edge cases.  Use at your own risk. You may have to fix the odd
 # merge conflict after running this.
@@ -62,6 +62,7 @@ for name in names:
             print( f'Error: {orgName}/{folderName} does not exist')
             continue            #Skip everything else!
         else:
+            print e
             raise e  
     
     
@@ -72,17 +73,18 @@ for name in names:
         #Check to see if Feedback branch exists
         
         checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
-        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) != 0):  #check if feedback branch, if not create it.
+        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) != 0):  #check if feedback branch exists.
         
             noisy(subprocess.check_output('git add --all', shell=True))       #Stage all (new, modified, deleted) files
             #os.system('git commit -m '+ commitMessage)                        #Commit all staged changes  #NB: git reset HEAD~ If you want to undo a commit that is local.
             try:
                 noisy(subprocess.check_output('git commit -m '+ commitMessage, shell=True))                #Commit all (new, modified, deleted) files
-            except subprocess.CalledProcessError as e:  #If no PR exists this command errors out with a return value of 1
+            except subprocess.CalledProcessError as e:  #If nothing to commit this command errors out with a return value of 1
                 if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
+                    print e
                     raise e
                 
-            noisy(subprocess.check_output('git push', shell=True))                #Push Changes   
+            noisy(subprocess.check_output('git push', shell=True))                #Push Changes (if none exist this command does nothing)  <--This should probaby be after the commit in the try except, but don't want to spend the time to test the change to make sure nothing breaks.  It works as is.
 
           
             
@@ -93,7 +95,8 @@ for name in names:
                     noisy(subprocess.check_output('gh pr close feedback', shell=True))  #Close the current pull request if any exist
                 except subprocess.CalledProcessError as e:  #If no PR exists this command errors out with a return value of 1
                     if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
-                         raise e
+                        print e
+                        raise e
 
                 try:#Oringally this just made a single pull request, but I wanted to backup each branch just in case it was needed later
                     #To do that the feedback branch is renamed based on the current date/time and a PR is created from the renamed branch
@@ -109,8 +112,9 @@ for name in names:
                     noisy(subprocess.check_output('git push origin --delete feedback', shell=True))#Delete the feedback branch now that we are done with it
                     
                     
-                except e:
+                except Exception as e:
                     print("Something bad happened, check to see what happened while creating the pull request and renaming the old branch")
+                    print e
                     raise e
                     
                 
