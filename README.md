@@ -2,9 +2,10 @@
 This repo contains tools I use to manage my github repos.  The scripts are written in Python 3.  See the Github-Classroom-Utilities folder for more scripts written by [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
 
 ### WorkFlow
-Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  This semester I am going to try a bit of a different process whereby I provide all feedback in a separate branch.
+- Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  This semester I am going to try a bit of a different process whereby I provide all feedback in a separate branch.
+- (June 2021) Updated the process to rename the feedback branch thereby keeping a backup of it allowing the process to be completed multiple times.
 
-Workflow:
+**Workflow:**
 1. Create Assignment in github Classroom and share assignment link with class.
 2. Students work on Assignment.
     * Students create assignment via link.
@@ -12,7 +13,8 @@ Workflow:
 3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. (on mass by script - GetReadyForGrading.py)
 4. Teacher provides comments, feedback or grade in the feedback branch.
 5. Teacher commits changes and sends them to students as a pull request. (on mass by script - SendFeedback.py)
-6. Student reviews feedback/grade and can choose to integrate back into their code base (or not).
+     * Feedback branch is renamed as a part of this process based on the current date/time.  This allows the process to be repeated multiple times with minimal risk of merge conflicts.
+7. Student reviews feedback/grade and can choose to integrate back into their code base (or not).
 
 Also testing out the github cli for command line pull requests: https://cli.github.com/
 
