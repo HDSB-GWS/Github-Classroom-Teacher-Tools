@@ -26,6 +26,22 @@ assignmentName = 'example-repo'            #The repo assignment name in github c
 repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
 
 
+#----------------------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------------------------------
+### Checks to see if the feedback branch exists - if not create it
+### In either case, check out the branch.
+def feedbackBranchCheckAndCheckout():
+    #This was moved out of the else - make sure this doesn't cause issues
+    if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) == 0):  #check if feedback branch exists, if not create it.
+        print('Create and Push Feedback branch')
+        noisy(subprocess.check_output('git checkout -b feedback' , shell=True))   #Create new branch
+        noisy(subprocess.check_output('git push -u origin feedback' , shell=True)) 
+    else: #Branch already exists
+        print('Set branch to Feedback')  #While also duplicated above, if the project has just been cloned it's necessary to do it again.
+        noisy(subprocess.check_output('git checkout feedback' , shell=True)) #Checkout branch
+        
 startingPath = os.getcwd()
 
 with open(rosterPath) as f:
@@ -41,6 +57,7 @@ for name in names:
     defaultBranch = ""
     
     checkBranchCmd = f'git ls-remote --heads git@github.com:{orgName}/{folderName} '
+    
     try:
         if (len(subprocess.check_output(checkBranchCmd + "main", shell=True)) > 0):
             defaultBranch = 'main'
@@ -69,7 +86,8 @@ for name in names:
         noisy(subprocess.check_output('git stash -u', shell=True))                #Stash current changes
         noisy(subprocess.check_output('git checkout '+defaultBranch , shell=True))#Switch to default (aka student) branch
         noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from default branch
-        noisy(subprocess.check_output('git checkout feedback' , shell=True))      #Switch back to feedback branch
+        feedbackBranchCheckAndCheckout()
+        #noisy(subprocess.check_output('git checkout feedback' , shell=True))      #Switch back to feedback branch
         noisy(subprocess.check_output('git merge '+defaultBranch , shell=True))   #Merge in any changes made by student in default branch
         noisy(subprocess.check_output('git push' , shell=True))                   #Push the changes into the remote server
         try:
@@ -81,7 +99,6 @@ for name in names:
         lastCommitDateCmd = 'git log -1 --format=%cd' #Get the date and time of most recent commit
         lastCommitDate = subprocess.check_output(lastCommitDateCmd, shell=True);  #Save the result for use later
         print(f'Last Commit by {name} : {lastCommitDate.decode("utf-8")}')
-        os.chdir(startingPath)                        #Reset the path back to the starting folder
         
     else:     #Project has not been cloned before, so grab it.
                                                       #Clone Repo
@@ -91,15 +108,11 @@ for name in names:
             
         os.chdir(f'{repoPath}/{folderName}')         #Set correct repo path
         
-        if (len(subprocess.check_output(checkBranchCmd + "feedback", shell=True)) == 0):  #check if feedback branch exists, if not create it.
-            print('Create and Push branch')
-            noisy(subprocess.check_output('git checkout -b feedback' , shell=True))   #Create new branch
-            noisy(subprocess.check_output('git push -u origin feedback' , shell=True)) 
-        else: #Branch already exists
-            print('Set feeback to current branch')
-            noisy(subprocess.check_output('git checkout feedback' , shell=True)) #Checkout branch
+        feedbackBranchCheckAndCheckout()
+
         
-        os.chdir(startingPath)                        #Reset the path back to the starting folder
+    os.chdir(startingPath)                        #Reset the path back to the starting folder
 
         
 print("Finished!")
+
