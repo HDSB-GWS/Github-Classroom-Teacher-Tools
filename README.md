@@ -24,6 +24,10 @@ Gets and Updates all students repos to make sure they are ready for grading/feed
 - If Repo not already cloned: Clones repo and creates feedback branch
 - If Repo exists, stashes all uncommited changes, updates feedback branch from main branch, and restores stash
 
+## SendFeedback.py
+Once all repos pulled using getReadyForGrading.py have been graded, this script can be run to push the feedback to all of the students.
+- Creates feedback and pushes it back to the repo as a pull request.
+
 ## PushAllCommits.py
 Pushes all commits that exist in the active branch to all repos.
 
