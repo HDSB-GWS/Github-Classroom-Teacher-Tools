@@ -5,7 +5,9 @@
 
 # WARNING: This script is NOT super resiliant and does not check for all edge cases.  Use at your own risk.
 
-# Requires SSH key paired with GitHub Account
+# NOTE: Requires SSH key paired with GitHub Account
+
+# TODO: Add an argument that bypasses the entire roster and just checks a single git account. (are git accounts case sensitive?)
 
 import os
 import sys
@@ -81,13 +83,15 @@ for name in names:
         
         #os.system('git stash -u')
         #print("pre")
+        feedbackBranchCheckAndCheckout()
+
         noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from feedback branch
         #print("post")
         noisy(subprocess.check_output('git stash -u', shell=True))                #Stash current changes
         noisy(subprocess.check_output('git checkout '+defaultBranch , shell=True))#Switch to default (aka student) branch
         noisy(subprocess.check_output('git pull' , shell=True))                   #Pull any changes from default branch
-        feedbackBranchCheckAndCheckout()
-        #noisy(subprocess.check_output('git checkout feedback' , shell=True))      #Switch back to feedback branch
+        #feedbackBranchCheckAndCheckout()
+        noisy(subprocess.check_output('git checkout feedback' , shell=True))      #Switch back to feedback branch
         noisy(subprocess.check_output('git merge '+defaultBranch , shell=True))   #Merge in any changes made by student in default branch
         noisy(subprocess.check_output('git push' , shell=True))                   #Push the changes into the remote server
         try:
