@@ -108,7 +108,11 @@ for name in names:
                     noisy(subprocess.check_output(f'git push origin -u {backup_name}', shell=True))#Push renamed branch to cloud
                     
                     noisy(subprocess.check_output('gh pr create --fill --title "Feedback from Mr. Brooks"', shell=True))    #Create new Pull Request
-                                    
+                    
+                    ### Testing ### Students might find it easier if I just merge the changes back into the repo instead of them having to check a PR and merge themselves
+                    noisy(subprocess.check_output('gh pr merge -m', shell=True))    #Merge Pull Request
+                    
+                    ### END Testing ###
                     noisy(subprocess.check_output('git push origin --delete feedback', shell=True))#Delete the feedback branch now that we are done with it
                     noisy(subprocess.check_output('git checkout '+defaultBranch, shell=True))   #Check out the default branch
                     
