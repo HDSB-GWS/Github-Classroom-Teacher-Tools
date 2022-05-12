@@ -45,6 +45,7 @@ def feedbackBranchCheckAndCheckout():
         noisy(subprocess.check_output('git checkout feedback' , shell=True)) #Checkout branch
         
 startingPath = os.getcwd()
+summary = []
 
 with open(rosterPath) as f:
     names = f.read().splitlines()
@@ -71,6 +72,7 @@ for name in names:
     except subprocess.CalledProcessError as e:
         if e.returncode == 128: #Repo does not exist, or incorrect permissions
             print( f'Error: {orgName}/{folderName} does not exist')
+            summary.append(f'{name} : Repo does not exist')
             continue            #Skip everything else!
         else:
             raise e    
@@ -103,6 +105,8 @@ for name in names:
         lastCommitDateCmd = 'git log -1 --format=%cd' #Get the date and time of most recent commit
         lastCommitDate = subprocess.check_output(lastCommitDateCmd, shell=True);  #Save the result for use later
         print(f'Last Commit by {name} : {lastCommitDate.decode("utf-8")}')
+        summary.append(f'{name} : {lastCommitDate.decode("utf-8")}')
+        
         
     else:     #Project has not been cloned before, so grab it.
                                                       #Clone Repo
@@ -117,6 +121,9 @@ for name in names:
         
     os.chdir(startingPath)                        #Reset the path back to the starting folder
 
-        
-print("Finished!")
+print("Summary")
+summary = sorted(summary, key=str.casefold)
+for entry in summary:
+    print(entry.strip())
+
 
