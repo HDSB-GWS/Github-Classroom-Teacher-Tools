@@ -1,5 +1,5 @@
 # Github-Teacher-Tools
-This repo contains tools I use to manage my github repos.  The scripts are written in Python 3.  See the Github-Classroom-Utilities folder for more scripts written by [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
+This repo contains tools I use to manage my github repos.  The scripts are written in Python 3.  These scripts are originally based on C Cannon's GitHub classroom utilities.  See the Github-Classroom-Utilities folder for more scripts written by [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
 
 ### WorkFlow
 - Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  This semester I am going to try a bit of a different process whereby I provide all feedback in a separate branch.
