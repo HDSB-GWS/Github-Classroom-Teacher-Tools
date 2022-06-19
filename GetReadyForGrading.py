@@ -8,7 +8,8 @@
 # NOTE: Requires SSH key paired with GitHub Account
 
 # TODO: Add some error handling that catches any crashes due to merge conflics and prints out a report of them instead of stopping the entire process
-# TODO: Add an argument that bypasses the entire roster and just checks a single git account. (are git accounts case sensitive?)
+# TODO: Write the summary file to a spreadsheet for an easy to view summary of all the changes by username.
+# TODO: Add an argument that bypasses the entire roster and just checks a single git account. 
 
 
 import os
@@ -27,10 +28,10 @@ orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
 rosterPath = r'C:\SOMEPATH\ics2oq2.txt'    #Path to your class roster (one github username per line)
 
 #Assignment Info
+assignmentList = []
 assignmentName = 'example-repo'            #The repo assignment name in github classroom
 repoPath = r'C:\SOMEPATH\ExampleRepo'      #The path to save the repos that are downloaded
-assignmentList = []
-#     assignmentList.append([assignmentName,repoPath])
+assignmentList.append([assignmentName,repoPath]) #Add each assignment you wish to check to the list
 
 
 #----------------------------------------------------------------------------------------------
