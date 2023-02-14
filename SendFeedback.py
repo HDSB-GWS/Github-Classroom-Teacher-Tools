@@ -15,6 +15,7 @@ import re
 import time
 
 isQuiet = False     #This script really spams the console so os.system commands replaced with subprocess and can be muted via isQuiet
+delayTime = 0.5      #Having some issues with the Graph QL rate limiter so adding a slight delay in between users (units in seconds)
 
 def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
     if not isQuiet:
@@ -130,6 +131,7 @@ for name in names:
             print('Feedback branch does not exist - no Pull Request created')
          
         os.chdir(startingPath)                        #Reset the path back to the starting folder
+        time.sleep(delayTime)#Having issues the with rate limit, so adding a slight delay
         
         
     else:                                             #Project has not been cloned before, so go run the getReadyForGrading script.
