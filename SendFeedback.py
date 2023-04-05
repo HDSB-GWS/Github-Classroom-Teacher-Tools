@@ -21,7 +21,7 @@ def noisy(noiseIn): #Only allow console output for noisy commands if not isQuiet
     if not isQuiet:
         print(noiseIn.decode("utf-8"))
 
-commitMessage = ' "Feedback Commit"'
+commitMessage = 'Return Grade'
 
 #Classroom Info
 orgName = 'HDSB-GWS-XXXXX'                 #The name of your github organization
@@ -79,7 +79,7 @@ for name in names:
             noisy(subprocess.check_output('git add --all', shell=True))       #Stage all (new, modified, deleted) files
             #os.system('git commit -m '+ commitMessage)                        #Commit all staged changes  #NB: git reset HEAD~ If you want to undo a commit that is local.
             try:
-                noisy(subprocess.check_output('git commit -m '+ commitMessage, shell=True))                #Commit all (new, modified, deleted) files
+                noisy(subprocess.check_output('git commit -m "'+ commitMessage+'"', shell=True))                #Commit all (new, modified, deleted) files
             except subprocess.CalledProcessError as e:  #If nothing to commit this command errors out with a return value of 1
                 if e.returncode != 1:                   #So catch the error unless it's not 1, then let it through
                     print(e)
@@ -108,10 +108,10 @@ for name in names:
                     noisy(subprocess.check_output(f'git branch -m {backup_name}', shell=True))#Rename local feedback branch
                     noisy(subprocess.check_output(f'git push origin -u {backup_name}', shell=True))#Push renamed branch to cloud
                     
-                    noisy(subprocess.check_output('gh pr create --fill --title "Feedback from Mr. Brooks"', shell=True))    #Create new Pull Request
+                    noisy(subprocess.check_output(f'gh pr create --fill --title "Feedback from Mr. Brooks - {commitMessage}"', shell=True))    #Create new Pull Request
                     
                     ### Testing ### Students might find it easier if I just merge the changes back into the repo instead of them having to check a PR and merge themselves
-                    noisy(subprocess.check_output('gh pr merge -m', shell=True))    #Merge Pull Request
+                    noisy(subprocess.check_output('gh pr merge -s', shell=True))    #Merge Pull Request
                     
                     ### END Testing ###
                     noisy(subprocess.check_output('git push origin --delete feedback', shell=True))#Delete the feedback branch now that we are done with it
