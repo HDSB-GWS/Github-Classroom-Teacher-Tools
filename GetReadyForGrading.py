@@ -7,8 +7,9 @@
 
 # NOTE: Requires SSH key paired with GitHub Account
 
+# TODO: Invesigate the new classroom commands built into the github CLI to update this script.
 # TODO: Add some error handling that catches any crashes due to merge conflics and prints out a report of them instead of stopping the entire process
-# TODO: Write the summary file to a spreadsheet for an easy to view summary of all the changes by username.
+# TODO: Write the summary file to a spreadsheet/google sheet for an easy to view summary of all the changes by username.
 # TODO: Add an argument that bypasses the entire roster and just checks a single git account. 
 
 

@@ -8,6 +8,8 @@
 # WARNING: This script is NOT super resiliant and does not check for all edge cases.  Use at your own risk. You may have to fix the odd
 # merge conflict after running this.
 
+# TODO: Invesigate the new classroom commands built into the github CLI to update this script.
+
 import os
 import sys
 import subprocess

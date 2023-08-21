@@ -1,22 +1,24 @@
 # Github-Teacher-Tools
-This repo contains tools I use to manage my github repos.  The scripts are written in Python 3.  These scripts are originally based on C Cannon's GitHub classroom utilities.  See the Github-Classroom-Utilities folder for more scripts written by [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
+This repo contains tools I use to manage my student github repos.  The scripts are written in Python 3.  These scripts are originally based on C Cannon's [Christopher Cannon](https://github.com/ccannon94/github-classroom-utilties)
 
 ### WorkFlow
-- Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  This semester I am going to try a bit of a different process whereby I provide all feedback in a separate branch.
-- (June 2021) Updated the process to rename the feedback branch thereby keeping a backup of it allowing the process to be completed multiple times.
+- Previously I was just making changes to the main branch as students worked to provide feedback.  This occasionally caused some conflicts that had to be resolved.  I now work in a separate feedback branch and then create and merge a pull request with the feedback for the students.
 
 **Workflow:**
 1. Create Assignment in github Classroom and share assignment link with class.
-2. Students work on Assignment.
-    * Students create assignment via link.
+2. Students work on Assignment by doing the following.
+    * Students click link and create an assignment repo for themselves.
     * Students work on assignment in repl.it or IDE of their choice and submit work completed back to git repo (daily)
-3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. (on mass by script - GetReadyForGrading.py)
+3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. (GetReadyForGrading.py)
 4. Teacher provides comments, feedback or grade in the feedback branch.
-5. Teacher commits changes and sends them to students as a pull request. (on mass by script - SendFeedback.py)
-     * Feedback branch is renamed as a part of this process based on the current date/time.  This allows the process to be repeated multiple times with minimal risk of merge conflicts.
+5. Teacher commits changes and sends them to students as a pull request. (SendFeedback.py)
+     * The current Feedback branch is renamed as a part of this process based on the current date/time.  This allows a backup of every feedback branch merged in to still exits with minimal risk of merge conflicts.
 7. Student reviews feedback/grade and can choose to integrate back into their code base (or not).
 
-Also testing out the github cli for command line pull requests: https://cli.github.com/
+## Requirements
+- [GIT](https://git-scm.com/) 
+- [GitHub CLI](https://cli.github.com/)
+- Set up an SSH key in your OS and register it with Github 
 
 ## GetReadyForGrading.py
 Gets and Updates all students repos to make sure they are ready for grading/feedback.
@@ -27,6 +29,10 @@ Gets and Updates all students repos to make sure they are ready for grading/feed
 ## SendFeedback.py
 Once all repos pulled using getReadyForGrading.py have been graded, this script can be run to push the feedback to all of the students.
 - Creates feedback and pushes it back to the repo as a pull request.
+
+
+# Deprecated Files
+All the files listed below are no longer being maintained but can be found in the Old Files directory.
 
 ## PushAllCommits.py
 Pushes all commits that exist in the active branch to all repos.
