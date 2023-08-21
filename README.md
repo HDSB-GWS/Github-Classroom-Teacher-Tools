@@ -9,9 +9,9 @@ This repo contains tools I use to manage my student github repos.  The scripts a
 2. Students work on Assignment by doing the following.
     * Students click link and create an assignment repo for themselves.
     * Students work on assignment in repl.it or IDE of their choice and submit work completed back to git repo (daily)
-3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. [GetReadyForGrading.py](GetReadyForGrading.py)
+3. Teacher clones assignment, creates feedback branch and synchs with main branch as necessary. ([GetReadyForGrading.py](GetReadyForGrading.py)) 
 4. Teacher provides comments, feedback or grade in the feedback branch.
-5. Teacher commits changes and sends them to students as a pull request. [SendFeedback.py](SendFeedback.py)
+5. Teacher commits changes and sends them to students as a pull request. ([SendFeedback.py](SendFeedback.py))
      * The current Feedback branch is renamed as a part of this process based on the current date/time.  This allows a backup of every feedback branch merged in to still exits with minimal risk of merge conflicts.
 7. Student reviews feedback/grade and can choose to integrate back into their code base (or not).
 
